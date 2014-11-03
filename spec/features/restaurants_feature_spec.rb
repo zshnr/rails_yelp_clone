@@ -43,7 +43,7 @@ describe 'restaurants' do
 			visit '/restaurants'
 			click_link 'Edit KFC'
 			fill_in 'Name', with: 'Kentucky Fried Chicken'
-			click 'Update Restaurant'
+			click_button 'Update Restaurant'
 			expect(page).to have_content 'Kentucky Fried Chicken'
 			expect(current_path).to eq '/restaurants'
 		end
