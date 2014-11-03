@@ -1,0 +1,9 @@
+<% if @restaurants.any? %>
+	<% @restaurants.each do |restaurant| %>
+		<h2><%= link_to "#{restaurant.name}", restaurant_path(restaurant) %> </h2>
+	<% end %>
+<% else %>
+No restaurants yet!
+<% end %>
+
+<a href='/restaurants/new'>Add a restaurant</a>
