@@ -18,24 +18,33 @@ context 'user not signed in and on the homepage' do
 	end
 end
 
-context 'user signed in on the homepage' do
+context 'user signed in' do
 	before do
-		visit('/')
-		click_link('Sign up')
-		fill_in('Email', with: 'test@example.com')
-		fill_in('Password', with: 'testtest')
-		fill_in('Password confirmation', with: 'testtest')
-		click_button('Sign up')
+		@test = User.create(email: "test@test.com", password: "test1234", password_confirmation: "test1234")
+		login_as @test
 	end
 
-	it "should see 'sign out' link" do
+	it "on the homepage should see 'sign out' link" do
 		visit('/')
 		expect(page).to have_link('Sign out')
 	end
 
-	it "should not see a 'sign in' link and a 'sign up' link" do
+	it "on the homepage should not see a 'sign in' link and a 'sign up' link" do
 		visit('/')
 		expect(page).not_to have_link('Sign in')
 		expect(page).not_to have_link('Sign up')
+	end
+
+	it "can only edit a restaurant that they've created" do
+		@test.restaurants.create(name: "KFC")
+		visit('/')
+		expect(page).to have_link('Edit KFC')
+	end
+
+	it "cannot edit a restaurant they've not created" do
+		@anotheruser = User.create(email: "au@au.com", password: "test1234", password_confirmation: "test1234")
+		@anotheruser.restaurants.create(name: "Naughty Noodles")
+		visit('/')
+		expect(page).not_to have_link('Edit Naughty Noodles')
 	end
 end
