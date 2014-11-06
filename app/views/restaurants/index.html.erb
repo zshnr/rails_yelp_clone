@@ -23,4 +23,6 @@
 	<p> No restaurants yet</p>
 <% end %>
 
-<a href='/restaurants/new'>Add a restaurant</a>
+<% if current_user %>
+	<a href='/restaurants/new'>Add a restaurant</a>
+<% end %>
