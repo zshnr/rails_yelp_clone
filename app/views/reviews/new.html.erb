@@ -1,4 +1,5 @@
 <%= form_for [@restaurant, @review] do |f| %>
+	<%= f.hidden_field :user_id, :value => current_user.id %>
 	<%= f.label :thoughts %>
 	<%= f.text_area :thoughts %>
 	<%= f.label :rating %>
