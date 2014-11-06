@@ -47,4 +47,17 @@ context 'user signed in' do
 		visit('/')
 		expect(page).not_to have_link('Edit Naughty Noodles')
 	end
+
+	it "can only delete a restaurant that they have created" do
+		@test.restaurants.create(name: "KFC")
+		visit('/')
+		expect(page).to have_link('Delete KFC')
+	end
+
+	it "cannot delete a restaurant that they have not created" do
+		@anotheruser = User.create(email: "au@au.com", password: 'test1234', password_confirmation: "test1234")
+		@anotheruser.restaurants.create(name: "Naughty Noodles")
+		visit('/')
+		expect(page).not_to have_link('Delete Naughty Noodles')
+	end
 end
