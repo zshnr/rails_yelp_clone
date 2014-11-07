@@ -49,4 +49,13 @@ describe 'reviewing' do
 		expect(page).not_to have_content "so so"
 		expect(page).to have_content "Review deleted successfully"
 	end
+
+	it "allows users to only delete reviews that they have created" do
+		@kfc.reviews.create(thoughts: "so so", rating: 3, user_id: @test.id)
+		logout
+		@anotheruser = User.create(email: "au@au.com", password: "test1234", password_confirmation: "test1234")
+		login_as @anotheruser
+		visit('/')
+		expect(page).not_to have_link "Delete Review"
+	end
 end
