@@ -23,21 +23,13 @@ describe 'reviewing' do
 	end
 
 	it 'allows users to leave a review using a form' do
-		visit '/restaurants'
-		click_link 'Review KFC'
-		fill_in "Thoughts", with: "so so"
-		select '3', from: 'Rating'
-		click_button 'Leave Review'
+		leave_review('so so', "3")
 		expect(current_path).to eq '/restaurants'
 		expect(page).to have_content('so so')
 	end
 
 	it "allows users to only leave one review per restaurant" do
-		visit '/restaurants'
-		click_link 'Review KFC'
-		fill_in "Thoughts", with: "so so"
-		select '3', from: 'Rating'
-		click_button 'Leave Review'
+		leave_review('so so', "3")
 		click_link 'Review KFC'
 		expect(page).to have_content('You have already reviewed this restaurant')
 	end
@@ -58,4 +50,20 @@ describe 'reviewing' do
 		visit('/')
 		expect(page).not_to have_link "Delete Review"
 	end
+
+	it "displays an average rating for all reviews" do
+		leave_review('so so', "3")
+		@anotheruser = User.create(email: "au@au.com", password: "test1234", password_confirmation: "test1234")
+		login_as @anotheruser
+		leave_review('Finger licking good', "5")
+		expect(page).to have_content("Average rating: ★★★★☆")
+	end
+end
+
+def leave_review(thoughts, rating)
+	visit'/restaurants'
+	click_link 'Review KFC'
+	fill_in "Thoughts", with: thoughts
+	select rating, from: 'Rating'
+	click_button 'Leave Review'
 end
