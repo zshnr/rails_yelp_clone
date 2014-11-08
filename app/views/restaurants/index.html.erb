@@ -16,9 +16,9 @@
 			<ul>
 				<% restaurant.reviews.each do |review| %>
 					<li>
-						<p><%= review.thoughts %>, <strong><%= review.rating %></strong>/5</p>
-						
-						<p><span class="endorsements_count"><%= review.endorsements.count %></span> endorsements. <%= link_to 'Endorse', review_endorsements_path(review), method: :post, class: 'endorsements-link' %></p>
+						<%= review.thoughts %>, <strong><%= review.rating %></strong>/5
+						<%= link_to 'Endorse', review_endorsements_path(review), class: 'endorsements-link' %>
+						<span class="endorsements_count"><%= review.endorsements.count %></span> endorsements
 					</li>
 					<% if current_user == review.user %>
 						<%= link_to "Delete Review", review_path(restaurant, review: review), method: :delete %>	
