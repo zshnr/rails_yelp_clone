@@ -44,4 +44,4 @@ gem 'poltergeist', group: :test
 gem 'database_cleaner', group: :test
 gem 'devise'
 gem 'omniauth-facebook'
-gem 'jquery-turbolinks'
+gem 'paperclip'
